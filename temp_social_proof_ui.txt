@@ -1,0 +1,199 @@
+        {/* SOCIAL PROOF BAR editor (NEW - marquee + progress) */}
+        {activeTab === "socialproof" && (
+          <>
+            <h1 style={{ marginBottom: 8 }}>Social Proof / Slots Progress</h1>
+            <p style={{ marginTop: 0, color: "#4B5563", fontSize: 14 }}>Edit the marquee text, notice, and progress bar.</p>
+
+            <div style={{ marginTop: 20, maxWidth: 900, background: "white", padding: 20, borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+              {/* Marquee Text */}
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Marquee Text</label>
+                <input
+                  value={socialProofForm.marqueeText}
+                  onChange={(e) => setSocialProofForm({...socialProofForm, marqueeText: e.target.value})}
+                  placeholder="🚀 95 Entrepreneurs Joined • 98% Satisfaction"
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Marquee Text Color</label>
+                  <input
+                    type="color"
+                    value={socialProofForm.marqueeTextColor}
+                    onChange={(e) => setSocialProofForm({...socialProofForm, marqueeTextColor: e.target.value})}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Marquee Background</label>
+                  <input
+                    type="color"
+                    value={socialProofForm.marqueeBg}
+                    onChange={(e) => setSocialProofForm({...socialProofForm, marqueeBg: e.target.value})}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* Notice Text */}
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Notice Text</label>
+                <input
+                  value={socialProofForm.noticeText}
+                  onChange={(e) => setSocialProofForm({...socialProofForm, noticeText: e.target.value})}
+                  placeholder="Slots Filling Fast – Limited Seats"
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Notice Dot Color</label>
+                  <input
+                    type="color"
+                    value={socialProofForm.noticeDotColor}
+                    onChange={(e) => setSocialProofForm({...socialProofForm, noticeDotColor: e.target.value})}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Notice Text Color</label>
+                  <input
+                    type="color"
+                    value={socialProofForm.noticeTextColor}
+                    onChange={(e) => setSocialProofForm({...socialProofForm, noticeTextColor: e.target.value})}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* Progress Bar */}
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Percentage (0-100)</label>
+                <input
+                  type="number"
+                  value={socialProofForm.progressPercent}
+                  onChange={(e) => setSocialProofForm({...socialProofForm, progressPercent: Math.min(100, Math.max(0, e.target.value))})}
+                  min={0}
+                  max={100}
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Bar Color</label>
+                  <input
+                    type="color"
+                    value={socialProofForm.progressBarBg}
+                    onChange={(e) => setSocialProofForm({...socialProofForm, progressBarBg: e.target.value})}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Track Color</label>
+                  <input
+                    type="color"
+                    value={socialProofForm.progressTrackBg}
+                    onChange={(e) => setSocialProofForm({...socialProofForm, progressTrackBg: e.target.value})}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 18 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Label</label>
+                <input
+                  value={socialProofForm.progressLabel}
+                  onChange={(e) => setSocialProofForm({...socialProofForm, progressLabel: e.target.value})}
+                  placeholder="100.0% Sold Out"
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ marginBottom: 18 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Label Color</label>
+                <input
+                  type="color"
+                  value={socialProofForm.progressLabelColor}
+                  onChange={(e) => setSocialProofForm({...socialProofForm, progressLabelColor: e.target.value})}
+                  style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                />
+              </div>
+
+              <button onClick={handleSaveSocialProof} style={{ padding: "10px 18px", background: "#111827", color: "white", borderRadius: 6, border: "none", cursor: "pointer", fontWeight: 600 }}>Save Social Proof</button>
+              {socialProofMessage && <p style={{ marginTop: 12, fontSize: 14 }}>{socialProofMessage}</p>}
+
+              {/* LIVE PREVIEW */}
+              <div style={{ marginTop: 30 }}>
+                <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 700 }}>Live Preview</h3>
+                <div style={{ background: socialProofForm.marqueeBg, padding: 16, borderRadius: 8, border: "1px solid #E5E7EB" }}>
+
+                  {/* MARQUEE */}
+                  <div style={{
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    color: socialProofForm.marqueeTextColor,
+                    fontWeight: 600,
+                    marginBottom: 12
+                  }}>
+                    <marquee>{socialProofForm.marqueeText}</marquee>
+                  </div>
+
+                  {/* NOTICE */}
+                  <div style={{
+                    textAlign: "center",
+                    margin: "12px 0",
+                    fontWeight: 600,
+                    color: socialProofForm.noticeTextColor,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6
+                  }}>
+                    <span style={{
+                      display: "inline-block",
+                      width: 10,
+                      height: 10,
+                      background: socialProofForm.noticeDotColor,
+                      borderRadius: "50%"
+                    }} />
+                    {socialProofForm.noticeText}
+                  </div>
+
+                  {/* PROGRESS BAR */}
+                  <div style={{
+                    background: socialProofForm.progressTrackBg,
+                    height: 14,
+                    borderRadius: 999,
+                    overflow: "hidden",
+                    marginTop: 12
+                  }}>
+                    <div style={{
+                      width: `${socialProofForm.progressPercent}%`,
+                      background: socialProofForm.progressBarBg,
+                      height: "100%",
+                      transition: "width 0.3s ease"
+                    }} />
+                  </div>
+
+                  <div style={{
+                    textAlign: "center",
+                    marginTop: 6,
+                    fontWeight: 600,
+                    fontSize: 13,
+                    color: socialProofForm.progressLabelColor
+                  }}>
+                    {socialProofForm.progressLabel}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}

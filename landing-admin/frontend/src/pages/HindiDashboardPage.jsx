@@ -3,29 +3,29 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSectionByKey, updateSection } from "../api/sectionApi";
 
-const DashboardPage = () => {
+const HindiDashboardPage = () => {
   const navigate = useNavigate();
 
-  const SECTION_KEY_TOP_HEADER = "top_header"; // NEW - Top header with badge, progress, timer
-  const SECTION_KEY_SOCIAL_PROOF = "social_proof_bar"; // NEW - Social proof marquee + progress
-  const SECTION_KEY_HEADER = "header"; // Renamed to "Upper Section" in UI
-  const SECTION_KEY_HERO = "hero";
-  const SECTION_KEY_SESSION = "session";
-  const SECTION_KEY_CTA = "cta_timer"; // CTA + timer (now also contains the 4 top texts)
-  const SECTION_KEY_FEATURED = "featured_logos";
-  const SECTION_KEY_TRANSFORM = "transform_section";
-  const SECTION_KEY_LEARN = "what_you_will_learn";
-  const SECTION_KEY_FEATURE_CARDS = "feature_cards"; // NEW
-  const SECTION_KEY_POWERKITS = "power_kits"; // NEW - section shown in screenshot
-  const SECTION_KEY_PRICING = "pricing_section"; // NEW - pricing/hero section (separate)
-  const SECTION_KEY_COACH = "coach_section"; // NEW - coach/meet your coach section
-  const SECTION_KEY_GUARANTEE = "guarantee_section"; // NEW - guarantee/money-back section
-  const SECTION_KEY_CLIENT_VIDEOS = "client_video_feedback"; // NEW - client video feedback carousel
-  const SECTION_KEY_FAQ = "faq_section"; // NEW - FAQ accordion section
-  const SECTION_KEY_FINAL_CTA = "final_cta"; // NEW - final CTA / register banner
-  const SECTION_KEY_FOOTER_PAGES = "footer_pages"; // NEW - footer pages (terms/privacy/refund)
+  const SECTION_KEY_TOP_HEADER = "top_header_hi"; // NEW - Top header with badge, progress, timer
+  const SECTION_KEY_SOCIAL_PROOF = "social_proof_bar_hi"; // NEW - Social proof marquee + progress
+  const SECTION_KEY_HEADER = "header_hi";
+  const SECTION_KEY_HERO = "hero_hi";
+  const SECTION_KEY_SESSION = "session_hi";
+  const SECTION_KEY_CTA = "cta_timer_hi"; // CTA + timer (now also contains the 4 top texts)
+  const SECTION_KEY_FEATURED = "featured_logos_hi";
+  const SECTION_KEY_TRANSFORM = "transform_section_hi";
+  const SECTION_KEY_LEARN = "what_you_will_learn_hi";
+  const SECTION_KEY_FEATURE_CARDS = "feature_cards_hi"; // NEW
+  const SECTION_KEY_POWERKITS = "power_kits_hi"; // NEW - section shown in screenshot
+  const SECTION_KEY_PRICING = "pricing_section_hi"; // NEW - pricing/hero section (separate)
+  const SECTION_KEY_COACH = "coach_section_hi"; // NEW - coach/meet your coach section
+  const SECTION_KEY_GUARANTEE = "guarantee_section_hi"; // NEW - guarantee/money-back section
+  const SECTION_KEY_CLIENT_VIDEOS = "client_video_feedback_hi"; // NEW - client video feedback carousel
+  const SECTION_KEY_FAQ = "faq_section_hi"; // NEW - FAQ accordion section
+  const SECTION_KEY_FINAL_CTA = "final_cta_hi"; // NEW - final CTA / register banner
+  const SECTION_KEY_FOOTER_PAGES = "footer_pages_hi"; // NEW - footer pages (terms/privacy/refund)
 
-  const [activeTab, setActiveTab] = useState("topheader"); // topheader | header | hero | session | cta | featured | transform | learn | featurecards | powerkits | pricing | coach | guarantee | clientvideos
+  const [activeTab, setActiveTab] = useState("topheader"); // topheader | socialproof | header | hero | session | cta | featured | transform | learn | featurecards | powerkits | pricing | coach | guarantee | clientvideos
 
   // ===== NEW: Top Header (badge + progress + timer) =====
   const [topHeaderForm, setTopHeaderForm] = useState({
@@ -57,7 +57,7 @@ const DashboardPage = () => {
   });
   const [socialProofMessage, setSocialProofMessage] = useState("");
 
-  // ===== Upper Section (formerly "header") =====
+  // ===== header (modified: headerImageUrl can be a dataURL from upload) =====
   const [form, setForm] = useState({
     headerImageUrl: "",
     pageHeading: "",
@@ -367,7 +367,7 @@ const DashboardPage = () => {
         console.warn("Social proof section missing — will create on save.");
       }
 
-      // Load Upper Section (formerly "header")
+      // Load Header (Upper Section)
       try {
         const headerData = await getSectionByKey(SECTION_KEY_HEADER);
         const extraHeader = headerData.extraData || {};
@@ -1631,11 +1631,11 @@ const DashboardPage = () => {
 
         <button onClick={() => setActiveTab("topheader")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "topheader" ? "#FBBF24" : "transparent", color: activeTab === "topheader" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Header</button>
 
+        <button onClick={() => setActiveTab("socialproof")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "socialproof" ? "#FBBF24" : "transparent", color: activeTab === "socialproof" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Social Proof Bar</button>
+
         <button onClick={() => setActiveTab("header")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "header" ? "#FBBF24" : "transparent", color: activeTab === "header" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Upper Section</button>
 
         <button onClick={() => setActiveTab("hero")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "hero" ? "#FBBF24" : "transparent", color: activeTab === "hero" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Hero Section</button>
-
-        <button onClick={() => setActiveTab("socialproof")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "socialproof" ? "#FBBF24" : "transparent", color: activeTab === "socialproof" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Social Proof Bar</button>
 
         <button onClick={() => setActiveTab("session")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "session" ? "#FBBF24" : "transparent", color: activeTab === "session" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Session Section</button>
 
@@ -1738,184 +1738,7 @@ const DashboardPage = () => {
           </button>
         </div>
 
-        {/* TOP HEADER editor (NEW - badge + progress + timer) */}
-        {activeTab === "topheader" && (
-          <>
-            <h1 style={{ marginBottom: 8 }}>Header</h1>
-            <p style={{ marginTop: 0, color: "#4B5563", fontSize: 14 }}>Edit the top header with badge, progress bar, and timer.</p>
-
-            <div style={{ marginTop: 20, maxWidth: 900, background: "white", padding: 20, borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-              {/* Left Badge */}
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Left Badge Text</label>
-                <input
-                  value={topHeaderForm.leftBadgeText}
-                  onChange={(e) => setTopHeaderForm({ ...topHeaderForm, leftBadgeText: e.target.value })}
-                  placeholder="Sold Out 100%"
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Badge Background Color</label>
-                  <input
-                    type="color"
-                    value={topHeaderForm.leftBadgeBg}
-                    onChange={(e) => setTopHeaderForm({ ...topHeaderForm, leftBadgeBg: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Badge Text Color</label>
-                  <input
-                    type="color"
-                    value={topHeaderForm.leftTextColor}
-                    onChange={(e) => setTopHeaderForm({ ...topHeaderForm, leftTextColor: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-              </div>
-
-              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
-
-              {/* Progress Bar */}
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Percentage (0-100)</label>
-                <input
-                  type="number"
-                  value={topHeaderForm.progressPercent}
-                  onChange={(e) => setTopHeaderForm({ ...topHeaderForm, progressPercent: Math.min(100, Math.max(0, e.target.value)) })}
-                  min={0}
-                  max={100}
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Bar Color</label>
-                <input
-                  type="color"
-                  value={topHeaderForm.progressBg}
-                  onChange={(e) => setTopHeaderForm({ ...topHeaderForm, progressBg: e.target.value })}
-                  style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                />
-              </div>
-
-              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
-
-              {/* Timer */}
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Timer Emoji</label>
-                <input
-                  value={topHeaderForm.timerEmoji}
-                  onChange={(e) => setTopHeaderForm({ ...topHeaderForm, timerEmoji: e.target.value })}
-                  placeholder="⏳"
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Timer Minutes</label>
-                  <input
-                    type="number"
-                    value={topHeaderForm.timerMinutes}
-                    onChange={(e) => setTopHeaderForm({ ...topHeaderForm, timerMinutes: e.target.value })}
-                    min={0}
-                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Timer Seconds</label>
-                  <input
-                    type="number"
-                    value={topHeaderForm.timerSeconds}
-                    onChange={(e) => setTopHeaderForm({ ...topHeaderForm, timerSeconds: e.target.value })}
-                    min={0}
-                    max={59}
-                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                  />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 18 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Timer Text Color</label>
-                <input
-                  type="color"
-                  value={topHeaderForm.timerTextColor}
-                  onChange={(e) => setTopHeaderForm({ ...topHeaderForm, timerTextColor: e.target.value })}
-                  style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                />
-              </div>
-
-              <button onClick={handleSaveTopHeader} style={{ padding: "10px 18px", background: "#111827", color: "white", borderRadius: 6, border: "none", cursor: "pointer", fontWeight: 600 }}>Save Header</button>
-              {topHeaderMessage && <p style={{ marginTop: 12, fontSize: 14 }}>{topHeaderMessage}</p>}
-
-              {/* LIVE PREVIEW */}
-              <div style={{ marginTop: 30 }}>
-                <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 700 }}>Live Preview</h3>
-                <div style={{
-                  padding: 12,
-                  background: "#000",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  borderRadius: 6
-                }}>
-                  <div style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10
-                  }}>
-                    <span style={{
-                      background: topHeaderForm.leftBadgeBg,
-                      color: topHeaderForm.leftTextColor,
-                      padding: "4px 10px",
-                      borderRadius: 999,
-                      fontWeight: 600,
-                      fontSize: 13
-                    }}>
-                      {topHeaderForm.leftBadgeText}
-                    </span>
-
-                    <div style={{
-                      width: 140,
-                      height: 6,
-                      background: "#333",
-                      borderRadius: 999
-                    }}>
-                      <div style={{
-                        width: `${topHeaderForm.progressPercent}%`,
-                        height: "100%",
-                        background: topHeaderForm.progressBg,
-                        borderRadius: 999,
-                        transition: "width 0.3s ease"
-                      }} />
-                    </div>
-                  </div>
-
-                  <div style={{
-                    color: topHeaderForm.timerTextColor,
-                    fontWeight: 600,
-                    fontSize: 14
-                  }}>
-                    {topHeaderForm.timerEmoji}
-                    {" "}
-                    {String(topHeaderForm.timerMinutes).padStart(2, "0")}
-                    :
-                    {String(topHeaderForm.timerSeconds).padStart(2, "0")}
-                  </div>
-                </div>
-                <p style={{ fontSize: 12, opacity: 0.6, marginTop: 6, marginBottom: 0 }}>
-                  ⓘ Preview only — timer will run on live website
-                </p>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* UPPER SECTION editor (formerly "HEADER") */}
+        {/* HEADER editor (modified image upload UI) */}
         {activeTab === "header" && (
           <>
             <h1 style={{ marginBottom: 8 }}>Header Section</h1>
@@ -1950,8 +1773,8 @@ const DashboardPage = () => {
               <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
 
               <div style={{ marginBottom: 14, marginTop: 10 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Line 1 – LIVE text</label>
-                <input name="liveText" value={form.liveText} onChange={handleChange} placeholder="LIVE TODAY" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Line 1 – आज LIVE सेशन</label>
+                <input name="liveText" value={form.liveText} onChange={handleChange} placeholder="आज LIVE सेशन" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
               </div>
 
               <div style={{ marginBottom: 14 }}>
@@ -1961,7 +1784,7 @@ const DashboardPage = () => {
 
               <div style={{ marginBottom: 18 }}>
                 <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Line 3 – Sub text (bracket line)</label>
-                <input name="subText" value={form.subText} onChange={handleChange} placeholder="(Only a few slots left)" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                <input name="subText" value={form.subText} onChange={handleChange} placeholder="(आज के लिए कुछ ही स्लॉट बचे हैं)" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
               </div>
 
               <button onClick={handleSaveHeader} style={{ padding: "10px 18px", background: "#111827", color: "white", borderRadius: 6, border: "none", cursor: "pointer", fontWeight: 600 }}>Save Header</button>
@@ -1978,12 +1801,12 @@ const DashboardPage = () => {
             <div style={{ marginTop: 20, maxWidth: 900, background: "white", padding: 20, borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
               <div style={{ marginBottom: 14 }}>
                 <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Page Heading (big text shown on top)</label>
-                <input name="pageHeading" value={form.pageHeading} onChange={handleChange} placeholder="Transform Your Business With Personal 1-on-1 Guidance" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                <input name="pageHeading" value={form.pageHeading} onChange={handleChange} placeholder="आपके बिज़नेस के लिए पर्सनल 1-on-1 गाइडेंस के साथ गहरा ट्रांसफॉर्मेशन" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
               </div>
 
               <div style={{ marginBottom: 18 }}>
                 <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Page Subheading (paragraph under the big heading)</label>
-                <input name="pageSubheading" value={form.pageSubheading} onChange={handleChange} placeholder="Get clarity, strategy & direction tailored exactly for YOUR business." style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                <input name="pageSubheading" value={form.pageSubheading} onChange={handleChange} placeholder="यहाँ आपको क्लियर रोडमैप, सही स्ट्रेटेजी और वह डायरेक्शन मिलेगा जो सीधे आपके खुद के बिज़नेस पर लागू होता है।" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
               </div>
 
               <hr style={{ margin: "18px 0", borderColor: "#E5E7EB" }} />
@@ -2085,206 +1908,6 @@ const DashboardPage = () => {
               </div>
 
               {message && <div style={{ marginTop: 12, fontSize: 14, color: message.startsWith("✅") ? "green" : "red", fontWeight: 600 }}>{message}</div>}
-            </div>
-          </>
-        )}
-
-        {/* SOCIAL PROOF BAR editor (NEW - marquee + progress) */}
-        {activeTab === "socialproof" && (
-          <>
-            <h1 style={{ marginBottom: 8 }}>Social Proof / Slots Progress</h1>
-            <p style={{ marginTop: 0, color: "#4B5563", fontSize: 14 }}>Edit the marquee text, notice, and progress bar.</p>
-
-            <div style={{ marginTop: 20, maxWidth: 900, background: "white", padding: 20, borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
-              {/* Marquee Text */}
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Marquee Text</label>
-                <input
-                  value={socialProofForm.marqueeText}
-                  onChange={(e) => setSocialProofForm({ ...socialProofForm, marqueeText: e.target.value })}
-                  placeholder="🚀 95 Entrepreneurs Joined • 98% Satisfaction"
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Marquee Text Color</label>
-                  <input
-                    type="color"
-                    value={socialProofForm.marqueeTextColor}
-                    onChange={(e) => setSocialProofForm({ ...socialProofForm, marqueeTextColor: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Marquee Background</label>
-                  <input
-                    type="color"
-                    value={socialProofForm.marqueeBg}
-                    onChange={(e) => setSocialProofForm({ ...socialProofForm, marqueeBg: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-              </div>
-
-              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
-
-              {/* Notice Text */}
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Notice Text</label>
-                <input
-                  value={socialProofForm.noticeText}
-                  onChange={(e) => setSocialProofForm({ ...socialProofForm, noticeText: e.target.value })}
-                  placeholder="Slots Filling Fast – Limited Seats"
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Notice Dot Color</label>
-                  <input
-                    type="color"
-                    value={socialProofForm.noticeDotColor}
-                    onChange={(e) => setSocialProofForm({ ...socialProofForm, noticeDotColor: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Notice Text Color</label>
-                  <input
-                    type="color"
-                    value={socialProofForm.noticeTextColor}
-                    onChange={(e) => setSocialProofForm({ ...socialProofForm, noticeTextColor: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-              </div>
-
-              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
-
-              {/* Progress Bar */}
-              <div style={{ marginBottom: 14 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Percentage (0-100)</label>
-                <input
-                  type="number"
-                  value={socialProofForm.progressPercent}
-                  onChange={(e) => setSocialProofForm({ ...socialProofForm, progressPercent: Math.min(100, Math.max(0, e.target.value)) })}
-                  min={0}
-                  max={100}
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Bar Color</label>
-                  <input
-                    type="color"
-                    value={socialProofForm.progressBarBg}
-                    onChange={(e) => setSocialProofForm({ ...socialProofForm, progressBarBg: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-                <div>
-                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Track Color</label>
-                  <input
-                    type="color"
-                    value={socialProofForm.progressTrackBg}
-                    onChange={(e) => setSocialProofForm({ ...socialProofForm, progressTrackBg: e.target.value })}
-                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                  />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 18 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Label</label>
-                <input
-                  value={socialProofForm.progressLabel}
-                  onChange={(e) => setSocialProofForm({ ...socialProofForm, progressLabel: e.target.value })}
-                  placeholder="100.0% Sold Out"
-                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
-                />
-              </div>
-
-              <div style={{ marginBottom: 18 }}>
-                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Progress Label Color</label>
-                <input
-                  type="color"
-                  value={socialProofForm.progressLabelColor}
-                  onChange={(e) => setSocialProofForm({ ...socialProofForm, progressLabelColor: e.target.value })}
-                  style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
-                />
-              </div>
-
-              <button onClick={handleSaveSocialProof} style={{ padding: "10px 18px", background: "#111827", color: "white", borderRadius: 6, border: "none", cursor: "pointer", fontWeight: 600 }}>Save Social Proof</button>
-              {socialProofMessage && <p style={{ marginTop: 12, fontSize: 14 }}>{socialProofMessage}</p>}
-
-              {/* LIVE PREVIEW */}
-              <div style={{ marginTop: 30 }}>
-                <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 700 }}>Live Preview</h3>
-                <div style={{ background: socialProofForm.marqueeBg, padding: 16, borderRadius: 8, border: "1px solid #E5E7EB" }}>
-
-                  {/* MARQUEE */}
-                  <div style={{
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    color: socialProofForm.marqueeTextColor,
-                    fontWeight: 600,
-                    marginBottom: 12
-                  }}>
-                    <marquee>{socialProofForm.marqueeText}</marquee>
-                  </div>
-
-                  {/* NOTICE */}
-                  <div style={{
-                    textAlign: "center",
-                    margin: "12px 0",
-                    fontWeight: 600,
-                    color: socialProofForm.noticeTextColor,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 6
-                  }}>
-                    <span style={{
-                      display: "inline-block",
-                      width: 10,
-                      height: 10,
-                      background: socialProofForm.noticeDotColor,
-                      borderRadius: "50%"
-                    }} />
-                    {socialProofForm.noticeText}
-                  </div>
-
-                  {/* PROGRESS BAR */}
-                  <div style={{
-                    background: socialProofForm.progressTrackBg,
-                    height: 14,
-                    borderRadius: 999,
-                    overflow: "hidden",
-                    marginTop: 12
-                  }}>
-                    <div style={{
-                      width: `${socialProofForm.progressPercent}%`,
-                      background: socialProofForm.progressBarBg,
-                      height: "100%",
-                      transition: "width 0.3s ease"
-                    }} />
-                  </div>
-
-                  <div style={{
-                    textAlign: "center",
-                    marginTop: 6,
-                    fontWeight: 600,
-                    fontSize: 13,
-                    color: socialProofForm.progressLabelColor
-                  }}>
-                    {socialProofForm.progressLabel}
-                  </div>
-                </div>
-              </div>
             </div>
           </>
         )}
@@ -4260,5 +3883,5 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default HindiDashboardPage;
 

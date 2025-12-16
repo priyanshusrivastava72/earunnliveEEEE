@@ -16,7 +16,7 @@ const LoginPage = () => {
     try {
       const data = await loginAdmin(email, password);
       localStorage.setItem("adminToken", data.token);
-      navigate("/dashboard");
+      navigate("/select-language");
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Login failed");

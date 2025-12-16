@@ -1,0 +1,13 @@
+This file contains the Top Header and Social Proof sections that need to be added to HindiDashboardPage.jsx
+
+These sections should be inserted right before line 1741 (before the "HEADER editor" comment).
+
+The sections are already present in DashboardPage.jsx from lines 1741-2290.
+
+Instructions:
+1. Copy lines 1741-2290 from DashboardPage.jsx
+2. Insert them before line 1741 in HindiDashboardPage.jsx (before {/* HEADER editor */)
+
+This will add:
+- Top Header UI section (lines 1741-1916 in DashboardPage)
+- Social Proof Bar UI section (lines 2092-2290 in DashboardPage)
