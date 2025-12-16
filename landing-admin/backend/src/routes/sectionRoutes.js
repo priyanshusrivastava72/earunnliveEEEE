@@ -1,11 +1,11 @@
+// backend/src/routes/sectionRoutes.js
 import express from "express";
 import { Section } from "../models/Section.js";
 import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// GET all sections
-// GET /api/sections
+// GET all sections (public)
 router.get("/", async (req, res) => {
   try {
     const sections = await Section.find().sort({ key: 1 });
@@ -16,8 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET one section by key
-// GET /api/sections/:key
+// GET one section by key (public)
 router.get("/:key", async (req, res) => {
   try {
     const section = await Section.findOne({ key: req.params.key });
@@ -29,8 +28,7 @@ router.get("/:key", async (req, res) => {
   }
 });
 
-// CREATE / UPDATE section (admin only)
-// PUT /api/sections/:key
+// CREATE/UPDATE section (admin only)
 router.put("/:key", protect, async (req, res) => {
   try {
     const { title, subtitle, content, imageUrl, extraData } = req.body;

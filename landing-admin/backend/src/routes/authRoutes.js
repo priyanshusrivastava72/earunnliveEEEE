@@ -1,3 +1,4 @@
+// backend/src/routes/authRoutes.js
 import express from "express";
 import jwt from "jsonwebtoken";
 import { Admin } from "../models/Admin.js";
@@ -8,7 +9,7 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
-// POST /api/auth/register (one-time use to create admin)
+// ✅ ONE-TIME ADMIN CREATE: POST /api/auth/register
 router.post("/register", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -30,7 +31,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// POST /api/auth/login
+// ✅ LOGIN: POST /api/auth/login
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
