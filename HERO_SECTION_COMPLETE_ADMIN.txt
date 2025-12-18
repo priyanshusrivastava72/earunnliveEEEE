@@ -1,0 +1,376 @@
+/* ============================================
+   HERO SECTION - COMPLETE ADMIN PANEL
+   
+   FILE: DashboardPage.jsx
+   LOCATION: Inside {activeTab === "hero" && (...)} section
+   PASTE THIS: After the existing hero inputs, before Save button
+   ============================================ */
+
+              <hr style={{ margin: "24px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 🎨 HERO SECTION STYLING ===== */}
+              <h2 style={{ fontSize: 20, marginBottom: 16, marginTop: 0, color: "#111827" }}>🎨 Hero Section Styling</h2>
+
+              {/* SECTION BACKGROUND & LAYOUT */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#374151" }}>Section Background & Layout</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Background Color</label>
+                  <input
+                    type="color"
+                    value={heroForm.heroBgColor}
+                    onChange={(e) => setHeroForm({ ...heroForm, heroBgColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Padding Top</label>
+                  <input
+                    placeholder="60px"
+                    value={heroForm.heroPaddingTop}
+                    onChange={(e) => setHeroForm({ ...heroForm, heroPaddingTop: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Padding Bottom</label>
+                  <input
+                    placeholder="60px"
+                    value={heroForm.heroPaddingBottom}
+                    onChange={(e) => setHeroForm({ ...heroForm, heroPaddingBottom: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* MAIN HEADING STYLES */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#374151" }}>Main Heading Styles</h3>
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading Text</label>
+                <input
+                  value={heroForm.pageHeading}
+                  onChange={(e) => setHeroForm({ ...heroForm, pageHeading: e.target.value })}
+                  placeholder="Transform Your Business..."
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading Color</label>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <input
+                      type="color"
+                      value={heroForm.headingColor}
+                      onChange={(e) => setHeroForm({ ...heroForm, headingColor: e.target.value })}
+                      style={{ width: 48, height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                    />
+                    <input
+                      value={heroForm.headingColor}
+                      onChange={(e) => setHeroForm({ ...heroForm, headingColor: e.target.value })}
+                      style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Size</label>
+                  <input
+                    placeholder="48px"
+                    value={heroForm.headingFontSize}
+                    onChange={(e) => setHeroForm({ ...heroForm, headingFontSize: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Weight</label>
+                  <select
+                    value={heroForm.headingFontWeight}
+                    onChange={(e) => setHeroForm({ ...heroForm, headingFontWeight: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="400">Normal (400)</option>
+                    <option value="500">Medium (500)</option>
+                    <option value="600">Semi Bold (600)</option>
+                    <option value="700">Bold (700)</option>
+                    <option value="800">Extra Bold (800)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Family</label>
+                  <select
+                    value={heroForm.headingFontFamily}
+                    onChange={(e) => setHeroForm({ ...heroForm, headingFontFamily: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="system-ui">System UI</option>
+                    <option value="'Inter', sans-serif">Inter</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                    <option value="Georgia, serif">Georgia</option>
+                  </select>
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* SUBTEXT STYLES */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#374151" }}>Sub Text Styles</h3>
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Sub Text</label>
+                <input
+                  value={heroForm.pageSubheading}
+                  onChange={(e) => setHeroForm({ ...heroForm, pageSubheading: e.target.value })}
+                  placeholder="Get clarity, strategy & direction..."
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Sub Text Color</label>
+                  <input
+                    type="color"
+                    value={heroForm.subTextColor}
+                    onChange={(e) => setHeroForm({ ...heroForm, subTextColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Size</label>
+                  <input
+                    placeholder="18px"
+                    value={heroForm.subTextFontSize}
+                    onChange={(e) => setHeroForm({ ...heroForm, subTextFontSize: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Weight</label>
+                  <select
+                    value={heroForm.subTextFontWeight}
+                    onChange={(e) => setHeroForm({ ...heroForm, subTextFontWeight: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="300">Light (300)</option>
+                    <option value="400">Normal (400)</option>
+                    <option value="500">Medium (500)</option>
+                    <option value="600">Semi Bold (600)</option>
+                  </select>
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* STAT CARDS STYLES */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#374151" }}>Stat Cards Styles</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Card Background</label>
+                  <input
+                    type="color"
+                    value={heroForm.statCardBg}
+                    onChange={(e) => setHeroForm({ ...heroForm, statCardBg: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Card Border Radius</label>
+                  <input
+                    placeholder="12px"
+                    value={heroForm.statCardRadius}
+                    onChange={(e) => setHeroForm({ ...heroForm, statCardRadius: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Number Color</label>
+                  <input
+                    type="color"
+                    value={heroForm.statNumberColor}
+                    onChange={(e) => setHeroForm({ ...heroForm, statNumberColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Number Size</label>
+                  <input
+                    placeholder="24px"
+                    value={heroForm.statNumberSize}
+                    onChange={(e) => setHeroForm({ ...heroForm, statNumberSize: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* BUTTON STYLES */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#374151" }}>Button Styles</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Button Background</label>
+                  <input
+                    type="color"
+                    value={heroForm.buttonBgColor}
+                    onChange={(e) => setHeroForm({ ...heroForm, buttonBgColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Button Text Color</label>
+                  <input
+                    type="color"
+                    value={heroForm.buttonTextColor}
+                    onChange={(e) => setHeroForm({ ...heroForm, buttonTextColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Size</label>
+                  <input
+                    placeholder="18px"
+                    value={heroForm.buttonFontSize}
+                    onChange={(e) => setHeroForm({ ...heroForm, buttonFontSize: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Weight</label>
+                  <select
+                    value={heroForm.buttonFontWeight}
+                    onChange={(e) => setHeroForm({ ...heroForm, buttonFontWeight: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="400">Normal (400)</option>
+                    <option value="600">Semi Bold (600)</option>
+                    <option value="700">Bold (700)</option>
+                    <option value="800">Extra Bold (800)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Border Radius</label>
+                  <input
+                    placeholder="999px"
+                    value={heroForm.buttonRadius}
+                    onChange={(e) => setHeroForm({ ...heroForm, buttonRadius: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "24px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 👁️ LIVE PREVIEW ===== */}
+              <h2 style={{ fontSize: 20, marginBottom: 16, marginTop: 0 }}>👁️ Live Preview</h2>
+              <div style={{
+                backgroundColor: heroForm.heroBgColor,
+                paddingTop: heroForm.heroPaddingTop,
+                paddingBottom: heroForm.heroPaddingBottom,
+                borderRadius: 10,
+                border: "2px solid #E5E7EB",
+                textAlign: "center",
+                padding: "40px 20px"
+              }}>
+                {/* Main Heading */}
+                <h1 style={{
+                  color: heroForm.headingColor,
+                  fontSize: heroForm.headingFontSize,
+                  fontWeight: heroForm.headingFontWeight,
+                  fontFamily: heroForm.headingFontFamily,
+                  lineHeight: heroForm.headingLineHeight,
+                  margin: "0 0 16px 0",
+                  maxWidth: "800px",
+                  marginLeft: "auto",
+                  marginRight: "auto"
+                }}>
+                  {heroForm.pageHeading}
+                </h1>
+
+                {/* Sub Text */}
+                <p style={{
+                  color: heroForm.subTextColor,
+                  fontSize: heroForm.subTextFontSize,
+                  fontWeight: heroForm.subTextFontWeight,
+                  marginTop: heroForm.subTextMarginTop,
+                  marginBottom: "32px"
+                }}>
+                  {heroForm.pageSubheading}
+                </p>
+
+                {/* Stat Cards */}
+                <div style={{
+                  display: "flex",
+                  gap: heroForm.statGap,
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                  marginBottom: "32px"
+                }}>
+                  {heroForm.stats.map((stat, idx) => (
+                    <div key={idx} style={{
+                      background: heroForm.statCardBg,
+                      border: heroForm.statCardBorder,
+                      padding: heroForm.statCardPadding,
+                      borderRadius: heroForm.statCardRadius,
+                      minWidth: "150px"
+                    }}>
+                      <div style={{
+                        color: heroForm.statNumberColor,
+                        fontSize: heroForm.statNumberSize,
+                        fontWeight: heroForm.statNumberWeight,
+                        marginBottom: "4px"
+                      }}>
+                        {stat.number}
+                      </div>
+                      <div style={{
+                        color: heroForm.statTextColor,
+                        fontSize: heroForm.statTextSize
+                      }}>
+                        {stat.text}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Button */}
+                <div style={{ marginTop: heroForm.buttonMarginTop }}>
+                  <button style={{
+                    background: heroForm.buttonBgColor,
+                    color: heroForm.buttonTextColor,
+                    fontSize: heroForm.buttonFontSize,
+                    fontWeight: heroForm.buttonFontWeight,
+                    padding: heroForm.buttonPadding,
+                    borderRadius: heroForm.buttonRadius,
+                    border: "none",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px"
+                  }}>
+                    {heroForm.buttonText}
+                    {heroForm.badgeVisible && heroForm.badgeText && (
+                      <span style={{
+                        background: heroForm.badgeBgColor,
+                        color: heroForm.badgeTextColor,
+                        fontSize: heroForm.badgeFontSize,
+                        padding: heroForm.badgePadding,
+                        borderRadius: "6px",
+                        fontWeight: "700"
+                      }}>
+                        {heroForm.badgeText}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>

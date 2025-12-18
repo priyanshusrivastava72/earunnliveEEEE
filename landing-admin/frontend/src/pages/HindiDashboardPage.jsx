@@ -64,7 +64,24 @@ const HindiDashboardPage = () => {
     pageSubheading: "",
     liveText: "",
     mainHeading: "",
-    subText: ""
+    subText: "",
+
+    // 🎨 STYLES (NEW)
+    bgColor: "#ffffff",
+
+    headingColor: "#111827",
+    headingFontSize: "32px",
+    headingFontWeight: "700",
+    headingFontFamily: "system-ui",
+
+    subTextColor: "#6B7280",
+    subTextFontSize: "16px",
+
+    liveTextColor: "#DC2626",
+
+    textAlign: "center",
+    paddingTop: "40px",
+    paddingBottom: "40px"
   });
 
   // ===== hero (unchanged) =====
@@ -378,7 +395,20 @@ const HindiDashboardPage = () => {
           liveText: extraHeader.liveText || "LIVE TODAY",
           mainHeading:
             extraHeader.mainHeading || "1-on-1 Private Business Guidance Session",
-          subText: extraHeader.subText || "(Only a few slots left)"
+          subText: extraHeader.subText || "(Only a few slots left)",
+
+          // Load styles
+          bgColor: extraHeader.bgColor || "#ffffff",
+          headingColor: extraHeader.headingColor || "#111827",
+          headingFontSize: extraHeader.headingFontSize || "32px",
+          headingFontWeight: extraHeader.headingFontWeight || "700",
+          headingFontFamily: extraHeader.headingFontFamily || "system-ui",
+          subTextColor: extraHeader.subTextColor || "#6B7280",
+          subTextFontSize: extraHeader.subTextFontSize || "16px",
+          liveTextColor: extraHeader.liveTextColor || "#DC2626",
+          textAlign: extraHeader.textAlign || "center",
+          paddingTop: extraHeader.paddingTop || "40px",
+          paddingBottom: extraHeader.paddingBottom || "40px"
         });
       } catch (err) {
         console.warn("Header missing in DB — will create on save.");
@@ -764,11 +794,7 @@ const HindiDashboardPage = () => {
         content: form.subText,
         imageUrl: form.headerImageUrl,
         extraData: {
-          pageHeading: form.pageHeading,
-          pageSubheading: form.pageSubheading,
-          liveText: form.liveText,
-          mainHeading: form.mainHeading,
-          subText: form.subText
+          ...form  // 👈 Save entire form object (content + styles)
         }
       };
       await updateSection(SECTION_KEY_HEADER, payload);
@@ -1624,9 +1650,9 @@ const HindiDashboardPage = () => {
 
   // ===== RENDER =====
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div style={{ display: "flex", height: "100vh", overflow: "hidden", fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       {/* SIDEBAR */}
-      <aside style={{ width: 260, background: "#111827", color: "white", padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+      <aside style={{ width: 260, background: "#111827", color: "white", padding: 20, display: "flex", flexDirection: "column", gap: 12, overflowY: "auto", height: "100vh" }}>
         <div><h2 style={{ margin: 0, fontSize: 18 }}>Admin Dashboard</h2></div>
 
         <button onClick={() => setActiveTab("topheader")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "topheader" ? "#FBBF24" : "transparent", color: activeTab === "topheader" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Header</button>
@@ -1699,7 +1725,7 @@ const HindiDashboardPage = () => {
       </aside>
 
       {/* MAIN */}
-      <main style={{ flex: 1, padding: 28, background: "#F3F4F6" }}>
+      <main style={{ flex: 1, padding: 28, background: "#F3F4F6", overflowY: "auto", height: "100vh" }}>
         {/* PANEL TOGGLE */}
         <div
           style={{
@@ -1787,7 +1813,166 @@ const HindiDashboardPage = () => {
                 <input name="subText" value={form.subText} onChange={handleChange} placeholder="(आज के लिए कुछ ही स्लॉट बचे हैं)" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
               </div>
 
+              <hr style={{ margin: "24px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 🎨 STYLING CONTROLS (NEW) ===== */}
+              <h3 style={{ fontSize: 18, marginBottom: 12, marginTop: 0 }}>🎨 Header Styling</h3>
+              <p style={{ marginTop: 0, color: "#6B7280", fontSize: 13, marginBottom: 16 }}>Customize colors, fonts, sizes, alignment, and spacing</p>
+
+              {/* Background Color */}
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Background Color</label>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <input type="color" name="bgColor" value={form.bgColor} onChange={handleChange} style={{ width: 48, height: 36, border: "none", padding: 0, borderRadius: 6 }} />
+                  <input name="bgColor" value={form.bgColor} onChange={handleChange} style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                </div>
+              </div>
+
+              {/* Main Heading Styles */}
+              <h4 style={{ fontSize: 15, marginBottom: 10, marginTop: 20, color: "#374151" }}>Main Heading Styles</h4>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading Color</label>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <input type="color" name="headingColor" value={form.headingColor} onChange={handleChange} style={{ width: 48, height: 36, border: "none", padding: 0, borderRadius: 6 }} />
+                    <input name="headingColor" value={form.headingColor} onChange={handleChange} style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading Font Size</label>
+                  <input name="headingFontSize" value={form.headingFontSize} onChange={handleChange} placeholder="32px" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading Font Weight</label>
+                  <select name="headingFontWeight" value={form.headingFontWeight} onChange={handleChange} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}>
+                    <option value="400">Normal (400)</option>
+                    <option value="500">Medium (500)</option>
+                    <option value="600">Semi Bold (600)</option>
+                    <option value="700">Bold (700)</option>
+                    <option value="800">Extra Bold (800)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Font Family</label>
+                  <select name="headingFontFamily" value={form.headingFontFamily} onChange={handleChange} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}>
+                    <option value="system-ui">System UI</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Inter', sans-serif">Inter</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                    <option value="'Open Sans', sans-serif">Open Sans</option>
+                    <option value="Georgia, serif">Georgia</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Sub Text Styles */}
+              <h4 style={{ fontSize: 15, marginBottom: 10, marginTop: 20, color: "#374151" }}>Sub Text Styles</h4>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Sub Text Color</label>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <input type="color" name="subTextColor" value={form.subTextColor} onChange={handleChange} style={{ width: 48, height: 36, border: "none", padding: 0, borderRadius: 6 }} />
+                    <input name="subTextColor" value={form.subTextColor} onChange={handleChange} style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Sub Text Font Size</label>
+                  <input name="subTextFontSize" value={form.subTextFontSize} onChange={handleChange} placeholder="16px" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                </div>
+              </div>
+
+              {/* Live Text Color */}
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Live Text Color</label>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <input type="color" name="liveTextColor" value={form.liveTextColor} onChange={handleChange} style={{ width: 48, height: 36, border: "none", padding: 0, borderRadius: 6 }} />
+                  <input name="liveTextColor" value={form.liveTextColor} onChange={handleChange} style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                </div>
+              </div>
+
+              {/* Layout & Spacing */}
+              <h4 style={{ fontSize: 15, marginBottom: 10, marginTop: 20, color: "#374151" }}>Layout & Spacing</h4>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Text Align</label>
+                  <select name="textAlign" value={form.textAlign} onChange={handleChange} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}>
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Padding Top</label>
+                  <input name="paddingTop" value={form.paddingTop} onChange={handleChange} placeholder="40px" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                </div>
+
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Padding Bottom</label>
+                  <input name="paddingBottom" value={form.paddingBottom} onChange={handleChange} placeholder="40px" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }} />
+                </div>
+              </div>
+
+              <hr style={{ margin: "24px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== LIVE PREVIEW ===== */}
+              <h3 style={{ fontSize: 18, marginBottom: 12, marginTop: 0 }}>👁️ Live Preview</h3>
+              <div style={{
+                backgroundColor: form.bgColor,
+                textAlign: form.textAlign,
+                paddingTop: form.paddingTop,
+                paddingBottom: form.paddingBottom,
+                borderRadius: 10,
+                border: "2px solid #E5E7EB",
+                marginBottom: 20
+              }}>
+                {form.liveText && (
+                  <div style={{
+                    color: form.liveTextColor,
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    marginBottom: "8px"
+                  }}>
+                    {form.liveText}
+                  </div>
+                )}
+
+                {form.mainHeading && (
+                  <h1 style={{
+                    color: form.headingColor,
+                    fontSize: form.headingFontSize,
+                    fontWeight: form.headingFontWeight,
+                    fontFamily: form.headingFontFamily,
+                    margin: "0 0 8px 0"
+                  }}>
+                    {form.mainHeading}
+                  </h1>
+                )}
+
+                {form.subText && (
+                  <p style={{
+                    color: form.subTextColor,
+                    fontSize: form.subTextFontSize,
+                    margin: 0
+                  }}>
+                    {form.subText}
+                  </p>
+                )}
+              </div>
+
               <button onClick={handleSaveHeader} style={{ padding: "10px 18px", background: "#111827", color: "white", borderRadius: 6, border: "none", cursor: "pointer", fontWeight: 600 }}>Save Header</button>
+
+              {message && <div style={{ marginTop: 12, fontSize: 14, color: message.startsWith("✅") ? "green" : "red", fontWeight: 600 }}>{message}</div>}
             </div>
           </>
         )}

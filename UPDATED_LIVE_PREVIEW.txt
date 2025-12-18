@@ -1,0 +1,66 @@
+/* ============================================
+   UPDATE EXISTING LIVE PREVIEW (around line 1895-1940)
+   REPLACE the existing Live Preview <div> with this:
+   ============================================ */
+
+              {/* LIVE PREVIEW */}
+              <div style={{ marginTop: 30 }}>
+                <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 700 }}>👁️ Full Live Preview</h3>
+                <div style={{
+                  padding: topHeaderForm.barPadding || "12px 20px",
+                  background: topHeaderForm.barBg || "#000",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderRadius: 6
+                }}>
+                  <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10
+                  }}>
+                    <span style={{
+                      background: topHeaderForm.leftBadgeBg,
+                      color: topHeaderForm.leftTextColor,
+                      padding: "4px 10px",
+                      borderRadius: 999,
+                      fontSize: topHeaderForm.badgeFontSize || "13px",
+                      fontWeight: topHeaderForm.badgeFontWeight || "600",
+                      fontFamily: topHeaderForm.badgeFontFamily || "system-ui"
+                    }}>
+                      {topHeaderForm.leftBadgeText}
+                    </span>
+
+                    <div style={{
+                      width: 140,
+                      height: topHeaderForm.progressHeight || "6px",
+                      background: "#333",
+                      borderRadius: 999
+                    }}>
+                      <div style={{
+                        width: `${topHeaderForm.progressPercent}%`,
+                        height: "100%",
+                        background: topHeaderForm.progressBg,
+                        borderRadius: 999,
+                        transition: "width 0.3s ease"
+                      }} />
+                    </div>
+                  </div>
+
+                  <div style={{
+                    color: topHeaderForm.timerTextColor,
+                    fontSize: topHeaderForm.timerFontSize || "14px",
+                    fontWeight: topHeaderForm.timerFontWeight || "600",
+                    fontFamily: topHeaderForm.timerFontFamily || "system-ui"
+                  }}>
+                    {topHeaderForm.timerEmoji}
+                    {" "}
+                    {String(topHeaderForm.timerMinutes).padStart(2, "0")}
+                    :
+                    {String(topHeaderForm.timerSeconds).padStart(2, "0")}
+                  </div>
+                </div>
+                <p style={{ fontSize: 12, opacity: 0.6, marginTop: 6, marginBottom: 0 }}>
+                  ⓘ Preview only — timer will run on live website
+                </p>
+              </div>

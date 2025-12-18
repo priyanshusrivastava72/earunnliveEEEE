@@ -97,6 +97,10 @@ const DashboardPage = () => {
     imageUrl: "",
     imageAlt: "Coach Image",
     imageLink: ""
+    sectionBg: "#FFFFFF",
+    sectionPadding: "60px 20px",
+    headingColor: "#111827",
+    headingFontSize: "32px"
   });
 
   // ===== CTA (now also holds the 4 top texts shown above CTA/boxes) =====

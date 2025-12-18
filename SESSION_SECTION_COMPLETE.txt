@@ -1,0 +1,320 @@
+/* ============================================
+   📋 SESSION SECTION - COMPLETE WITH STYLING
+   
+   STEP 1: Update sessionForm state (around line 180)
+   ============================================ */
+
+  // ===== session (with complete styling) =====
+  const [sessionForm, setSessionForm] = useState({
+    // CONTENT
+    heading: "What Happens In Your 1-on-1 Session?",
+    bullets: [
+      "You Get Personal Attention on your exact business challenges",
+      "You Receive a Custom Growth Plan designed only for your business",
+      "You Discover specific action steps for revenue, team & systems",
+      "You Walk Away With a clear Action roadmap",
+      "1 Hour That Can Change the Way You Run Your Business"
+    ],
+    imageUrl: "",
+    imageAlt: "Coach Image",
+    imageLink: "",
+    
+    // 🎨 SECTION STYLES
+    sectionBg: "#FFFFFF",
+    sectionPadding: "60px 20px",
+    
+    // 🎨 HEADING STYLES
+    headingColor: "#111827",
+    headingFontSize: "32px",
+    headingFontWeight: "700",
+    headingFontFamily: "system-ui",
+    headingMarginBottom: "24px",
+    
+    // 🎨 BULLET STYLES
+    bulletColor: "#374151",
+    bulletFontSize: "16px",
+    bulletFontWeight: "400",
+    bulletFontFamily: "system-ui",
+    bulletIconColor: "#10B981",
+    bulletSpacing: "12px"
+  });
+
+
+/* ============================================
+   STEP 2: Replace Session Section UI
+   Find "Session Section" (around line 2995)
+   Replace entire section with this:
+   ============================================ */
+
+        {/* SESSION editor */}
+        {activeTab === "session" && (
+          <>
+            <h1 style={{ marginBottom: 8 }}>Session Section</h1>
+            <p style={{ marginTop: 0, color: "#4B5563", fontSize: 14 }}>✨ Complete control: Heading, Bullets - all text fully customizable</p>
+
+            <div style={{ marginTop: 20, maxWidth: 900, background: "white", padding: 20, borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.08)" }}>
+              
+              {/* ===== 🎨 SECTION BACKGROUND ===== */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#111827", fontWeight: 700 }}>🎨 Section Background</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 18 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Background Color</label>
+                  <input
+                    type="color"
+                    value={sessionForm.sectionBg}
+                    onChange={(e) => setSessionForm({ ...sessionForm, sectionBg: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Section Padding</label>
+                  <input
+                    placeholder="60px 20px"
+                    value={sessionForm.sectionPadding}
+                    onChange={(e) => setSessionForm({ ...sessionForm, sectionPadding: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 📝 HEADING (Content + Full Styling) ===== */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#111827", fontWeight: 700 }}>📝 Section Heading</h3>
+              
+              <div style={{ marginBottom: 14 }}>
+                <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading Text</label>
+                <input
+                  name="heading"
+                  value={sessionForm.heading}
+                  onChange={handleSessionChange}
+                  placeholder="What Happens In Your 1-on-1 Session?"
+                  style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Heading Color</label>
+                  <input
+                    type="color"
+                    value={sessionForm.headingColor}
+                    onChange={(e) => setSessionForm({ ...sessionForm, headingColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Font Size</label>
+                  <input
+                    placeholder="32px"
+                    value={sessionForm.headingFontSize}
+                    onChange={(e) => setSessionForm({ ...sessionForm, headingFontSize: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 18 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Font Weight</label>
+                  <select
+                    value={sessionForm.headingFontWeight}
+                    onChange={(e) => setSessionForm({ ...sessionForm, headingFontWeight: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="400">Normal (400)</option>
+                    <option value="500">Medium (500)</option>
+                    <option value="600">Semi Bold (600)</option>
+                    <option value="700">Bold (700)</option>
+                    <option value="800">Extra Bold (800)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Font Family</label>
+                  <select
+                    value={sessionForm.headingFontFamily}
+                    onChange={(e) => setSessionForm({ ...sessionForm, headingFontFamily: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="system-ui">System UI</option>
+                    <option value="'Inter', sans-serif">Inter</option>
+                    <option value="'Poppins', sans-serif">Poppins</option>
+                    <option value="'Roboto', sans-serif">Roboto</option>
+                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                  </select>
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 📋 BULLETS (Content + Full Styling) ===== */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#111827", fontWeight: 700 }}>📋 Bullet Points</h3>
+              
+              {sessionForm.bullets.map((b, idx) => (
+                <div key={idx} style={{ marginBottom: 12 }}>
+                  <label style={{ display: "block", fontWeight: 600, marginBottom: 6, fontSize: 13 }}>Bullet {idx + 1}</label>
+                  <input
+                    value={b}
+                    onChange={(e) => {
+                      const newBullets = [...sessionForm.bullets];
+                      newBullets[idx] = e.target.value;
+                      setSessionForm({ ...sessionForm, bullets: newBullets });
+                    }}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              ))}
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Bullet Text Color</label>
+                  <input
+                    type="color"
+                    value={sessionForm.bulletColor}
+                    onChange={(e) => setSessionForm({ ...sessionForm, bulletColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Icon Color</label>
+                  <input
+                    type="color"
+                    value={sessionForm.bulletIconColor}
+                    onChange={(e) => setSessionForm({ ...sessionForm, bulletIconColor: e.target.value })}
+                    style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Font Size</label>
+                  <input
+                    placeholder="16px"
+                    value={sessionForm.bulletFontSize}
+                    onChange={(e) => setSessionForm({ ...sessionForm, bulletFontSize: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Font Weight</label>
+                  <select
+                    value={sessionForm.bulletFontWeight}
+                    onChange={(e) => setSessionForm({ ...sessionForm, bulletFontWeight: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  >
+                    <option value="300">Light (300)</option>
+                    <option value="400">Normal (400)</option>
+                    <option value="500">Medium (500)</option>
+                    <option value="600">Semi Bold (600)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Bullet Spacing</label>
+                  <input
+                    placeholder="12px"
+                    value={sessionForm.bulletSpacing}
+                    onChange={(e) => setSessionForm({ ...sessionForm, bulletSpacing: e.target.value })}
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 🖼️ IMAGE ===== */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, color: "#111827", fontWeight: 700 }}>🖼️ Image</h3>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 12, marginBottom: 14 }}>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Image URL</label>
+                  <input
+                    name="imageUrl"
+                    value={sessionForm.imageUrl}
+                    onChange={handleSessionChange}
+                    placeholder="https://example.com/image.jpg"
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Image Link</label>
+                  <input
+                    name="imageLink"
+                    value={sessionForm.imageLink}
+                    onChange={handleSessionChange}
+                    placeholder="#"
+                    style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                  />
+                </div>
+              </div>
+
+              <hr style={{ margin: "24px 0", borderColor: "#E5E7EB" }} />
+
+              {/* ===== 👁️ LIVE PREVIEW ===== */}
+              <h3 style={{ fontSize: 16, marginBottom: 12, marginTop: 0, fontWeight: 700 }}>👁️ Live Preview</h3>
+              <div style={{
+                backgroundColor: sessionForm.sectionBg,
+                padding: sessionForm.sectionPadding,
+                borderRadius: 8,
+                border: "1px solid #E5E7EB",
+                marginBottom: 20,
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+              }}>
+                {/* Heading */}
+                <h2 style={{
+                  color: sessionForm.headingColor,
+                  fontSize: sessionForm.headingFontSize,
+                  fontWeight: sessionForm.headingFontWeight,
+                  fontFamily: sessionForm.headingFontFamily,
+                  marginBottom: sessionForm.headingMarginBottom,
+                  marginTop: 0
+                }}>
+                  {sessionForm.heading}
+                </h2>
+
+                {/* Bullets */}
+                <div style={{ display: "flex", flexDirection: "column", gap: sessionForm.bulletSpacing }}>
+                  {sessionForm.bullets.map((bullet, idx) => (
+                    <div key={idx} style={{ display: "flex", alignItems: "flex-start", gap: "12px" }}>
+                      <span style={{
+                        color: sessionForm.bulletIconColor,
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        marginTop: "2px"
+                      }}>✓</span>
+                      <span style={{
+                        color: sessionForm.bulletColor,
+                        fontSize: sessionForm.bulletFontSize,
+                        fontWeight: sessionForm.bulletFontWeight,
+                        fontFamily: sessionForm.bulletFontFamily,
+                        flex: 1
+                      }}>
+                        {bullet}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Image Preview */}
+                {sessionForm.imageUrl && (
+                  <div style={{ marginTop: "24px", textAlign: "center" }}>
+                    <img 
+                      src={sessionForm.imageUrl} 
+                      alt={sessionForm.imageAlt}
+                      style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
+                    />
+                  </div>
+                )}
+              </div>
+              <p style={{ fontSize: 12, opacity: 0.6, marginTop: -12, marginBottom: 16, textAlign: "center" }}>
+                ⓘ Preview updates in real-time as you change values above
+              </p>
+
+              <div style={{ marginTop: 16, display: "flex", gap: 12, alignItems: "center" }}>
+                <button onClick={handleSaveSession} style={{ padding: "10px 18px", background: "#111827", color: "white", borderRadius: 6, border: "none", cursor: "pointer", fontWeight: 600 }}>Save Session</button>
+
+                {message && <div style={{ marginLeft: 12, fontSize: 14, color: message.startsWith("✅") ? "green" : "red", fontWeight: 600 }}>{message}</div>}
+              </div>
+            </div>
+          </>
+        )}

@@ -1,0 +1,115 @@
+/* ============================================
+   SESSION SECTION - 4 BASIC STYLING CONTROLS
+   
+   SUPER SIMPLE - Just 2 small changes!
+   ============================================ */
+
+/* ===== CHANGE 1: Update sessionForm state (Line 88-100) ===== */
+
+// FIND this code (around line 96-100):
+    ],
+    imageUrl: "",
+    imageAlt: "Coach Image",
+    imageLink: ""
+  });
+
+// REPLACE with this:
+    ],
+    imageUrl: "",
+    imageAlt: "Coach Image",
+    imageLink: "",
+    
+    // 🎨 STYLING
+    sectionBg: "#FFFFFF",
+    sectionPadding: "60px 20px",
+    headingColor: "#111827",
+    headingFontSize: "32px"
+  });
+
+
+/* ===== CHANGE 2: Add UI Controls (Find Session Section around line 2300+) ===== */
+
+// FIND this line:
+            <h1 style={{ marginBottom: 8 }}>Session Section</h1>
+
+// RIGHT AFTER the opening <div> (after the description paragraph), ADD this:
+
+              {/* ===== STYLING CONTROLS ===== */}
+              <div style={{ marginBottom: 20, padding: 16, background: "#F9FAFB", borderRadius: 8 }}>
+                <h3 style={{ fontSize: 14, marginTop: 0, marginBottom: 12, fontWeight: 600 }}>🎨 Styling Controls</h3>
+                
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+                  <div>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Section Background</label>
+                    <input
+                      type="color"
+                      value={sessionForm.sectionBg}
+                      onChange={(e) => setSessionForm({ ...sessionForm, sectionBg: e.target.value })}
+                      style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Section Padding</label>
+                    <input
+                      placeholder="60px 20px"
+                      value={sessionForm.sectionPadding}
+                      onChange={(e) => setSessionForm({ ...sessionForm, sectionPadding: e.target.value })}
+                      style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Heading Color</label>
+                    <input
+                      type="color"
+                      value={sessionForm.headingColor}
+                      onChange={(e) => setSessionForm({ ...sessionForm, headingColor: e.target.value })}
+                      style={{ width: "100%", height: 40, borderRadius: 6, border: "1px solid #D1D5DB", cursor: "pointer" }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 13 }}>Heading Font Size</label>
+                    <input
+                      placeholder="32px"
+                      value={sessionForm.headingFontSize}
+                      onChange={(e) => setSessionForm({ ...sessionForm, headingFontSize: e.target.value })}
+                      style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", fontSize: 14 }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <hr style={{ margin: "20px 0", borderColor: "#E5E7EB" }} />
+
+
+/* ===== CHANGE 3: Update Live Preview (Find "Live Preview" in Session section) ===== */
+
+// FIND the Live Preview div (around line 2350+), it starts with:
+                <div style={{ background: "#fff", borderRadius: 12, padding: 28...
+
+// UPDATE the style to use dynamic values:
+                <div style={{ 
+                  background: sessionForm.sectionBg, 
+                  borderRadius: 12, 
+                  padding: sessionForm.sectionPadding,
+                  width: "60%", 
+                  maxWidth: 640, 
+                  border: "1px solid rgba(203, 116, 12, 0.10)", 
+                  boxShadow: "0 3px 18px rgba(0,0,0,0.04)" 
+                }}>
+
+// AND update the heading style:
+                  <div style={{ 
+                    fontSize: sessionForm.headingFontSize, 
+                    fontWeight: 800, 
+                    color: sessionForm.headingColor, 
+                    marginBottom: 12 
+                  }}>{sessionForm.heading}</div>
+
+
+/* ============================================
+   DONE! Save file (Ctrl + S)
+   Browser will auto-refresh
+   ============================================ */
