@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getSectionByKey, updateSection } from "../api/sectionApi";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -24,8 +26,17 @@ const DashboardPage = () => {
   const SECTION_KEY_FAQ = "faq_section"; // NEW - FAQ accordion section
   const SECTION_KEY_FINAL_CTA = "final_cta"; // NEW - final CTA / register banner
   const SECTION_KEY_FOOTER_PAGES = "footer_pages"; // NEW - footer pages (terms/privacy/refund)
+  const SECTION_KEY_POPUP = "popup_section"; // NEW - popup modal
 
   const [activeTab, setActiveTab] = useState("topheader"); // topheader | header | hero | session | cta | featured | transform | learn | featurecards | powerkits | pricing | coach | guarantee | clientvideos
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const closeSidebar = () => setSidebarOpen(false);
+  const handleNav = (tab) => {
+    setActiveTab(tab);
+    setSidebarOpen(false);
+  };
 
   // ===== NEW: Top Header (badge + progress + timer) =====
   const [topHeaderForm, setTopHeaderForm] = useState({
@@ -96,7 +107,7 @@ const DashboardPage = () => {
     ],
     imageUrl: "",
     imageAlt: "Coach Image",
-    imageLink: ""
+    imageLink: "",
     sectionBg: "#FFFFFF",
     sectionPadding: "60px 20px",
     headingColor: "#111827",
@@ -334,6 +345,52 @@ const DashboardPage = () => {
   });
   const [footerPagesMessage, setFooterPagesMessage] = useState("");
   const [footerEditTab, setFooterEditTab] = useState("terms"); // 'terms' | 'privacy' | 'refund'
+
+  // ===== NEW: Popup Section (3 Variants) =====
+  const [popupForm, setPopupForm] = useState({
+    // 1. Exit Intent
+    exitPopup: {
+      enabled: true,
+      heading: "Wait! Before You Leave",
+      description: "Your ₹99 Guidance session is still available. Don't miss this chance!", // Rich text capable, though init as string
+      smallText: "🚀 51 Entrepreneurs Joined • 98% Satisfaction",
+      buttonText: "Register Now",
+      buttonLink: "#",
+      buttonBg: "#FBBF24",
+      buttonTextColor: "#111827",
+      badgeText: "Limited",
+      badgeVisible: true,
+      overlayColor: "rgba(0, 0, 0, 0.5)",
+      cardBg: "#ffffff"
+    },
+    // 2. Welcome Popup
+    welcomePopup: {
+      enabled: false,
+      heading: "Welcome Entrepreneur 🚀",
+      description: "\"Innovate constantly. Quality is the promise, but growth is the journey powered by relentless improvement.\"",
+      buttonText: "Continue",
+      buttonLink: "#",
+      buttonBg: "#FACC15",
+      buttonTextColor: "#111827",
+      overlayColor: "rgba(0,0,0,0.6)",
+      cardBg: "#ffffff"
+    },
+    // 3. Generic/Journey Popup ("Almost There")
+    journeyPopup: {
+      enabled: false,
+      heading: "You're Almost There!",
+      description: "Successful entrepreneurs take action. Today, your business deserves clarity & transformation.",
+      buttonText: "Start Your Journey @ ₹99",
+      buttonLink: "#",
+      buttonBg: "#FBBF24",
+      buttonTextColor: "#111827",
+      badgeText: "Limited",
+      badgeVisible: true,
+      overlayColor: "rgba(0,0,0,0.5)",
+      cardBg: "#ffffff"
+    }
+  });
+  const [popupMessage, setPopupMessage] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -671,6 +728,28 @@ const DashboardPage = () => {
         }
       } catch (err) {
         console.warn("Final CTA missing in DB — will create on save.");
+      }
+
+      // popup section
+      try {
+        const popData = await getSectionByKey(SECTION_KEY_POPUP);
+        const extra = popData.extraData || {};
+        // If we have data, merge it. Ensure structure exists.
+        if (extra && (extra.exitPopup || extra.welcomePopup || extra.journeyPopup)) {
+          setPopupForm(prev => ({
+            exitPopup: { ...prev.exitPopup, ...(extra.exitPopup || {}) },
+            welcomePopup: { ...prev.welcomePopup, ...(extra.welcomePopup || {}) },
+            journeyPopup: { ...prev.journeyPopup, ...(extra.journeyPopup || {}) }
+          }));
+        } else if (extra.heading) {
+          // Legacy/Single popup migration if needed
+          setPopupForm(prev => ({
+            ...prev,
+            exitPopup: { ...prev.exitPopup, heading: extra.heading, description: extra.description }
+          }));
+        }
+      } catch (err) {
+        console.warn("Popup section missing — will create on save.");
       }
 
       // footer pages (terms / privacy / refund)
@@ -1519,6 +1598,23 @@ const DashboardPage = () => {
     }
   };
 
+  // ===== POPUP handlers =====
+  const handleSavePopup = async () => {
+    setPopupMessage("");
+    try {
+      const payload = {
+        title: "Popup Section",
+        imageUrl: "",
+        extraData: { ...popupForm }
+      };
+      await updateSection(SECTION_KEY_POPUP, payload);
+      setPopupMessage("✅ Popup saved.");
+    } catch (err) {
+      console.error("Error saving popup:", err);
+      setPopupMessage("❌ Error saving popup.");
+    }
+  };
+
   // Carousel navigation
   const clientVideosPrev = () => {
     setClientVideosIndex(i => Math.max(0, i - 1));
@@ -1628,82 +1724,48 @@ const DashboardPage = () => {
 
   // ===== RENDER =====
   return (
-    <div style={{ display: "flex", minHeight: "100vh", fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
+    <div className="dashboard-container">
+      {/* Mobile Hamburger Button */}
+      <button className="mobile-menu-btn" onClick={toggleSidebar} aria-label="Toggle menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ width: 24, height: 24 }}>
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      {/* Mobile Overlay */}
+      <div className={`sidebar-overlay ${sidebarOpen ? "open" : ""}`} onClick={closeSidebar} />
+
       {/* SIDEBAR */}
-      <aside style={{ width: 260, background: "#111827", color: "white", padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
-        <div><h2 style={{ margin: 0, fontSize: 18 }}>Admin Dashboard</h2></div>
+      <aside className={`dashboard-sidebar ${sidebarOpen ? "open" : ""}`}>
+        <div style={{ marginBottom: 20, paddingBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+          <h2 style={{ margin: 0, fontSize: 18, color: "white" }}>Admin Dashboard</h2>
+        </div>
 
-        <button onClick={() => setActiveTab("topheader")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "topheader" ? "#FBBF24" : "transparent", color: activeTab === "topheader" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Header</button>
-
-        <button onClick={() => setActiveTab("header")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "header" ? "#FBBF24" : "transparent", color: activeTab === "header" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Upper Section</button>
-
-        <button onClick={() => setActiveTab("hero")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "hero" ? "#FBBF24" : "transparent", color: activeTab === "hero" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Hero Section</button>
-
-        <button onClick={() => setActiveTab("socialproof")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "socialproof" ? "#FBBF24" : "transparent", color: activeTab === "socialproof" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Social Proof Bar</button>
-
-        <button onClick={() => setActiveTab("session")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "session" ? "#FBBF24" : "transparent", color: activeTab === "session" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Session Section</button>
-
-        <button onClick={() => setActiveTab("cta")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "cta" ? "#FBBF24" : "transparent", color: activeTab === "cta" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>CTA & Timer</button>
-
-        <button onClick={() => setActiveTab("featured")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "featured" ? "#FBBF24" : "transparent", color: activeTab === "featured" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Featured Logos
-        </button>
-
-        <button onClick={() => setActiveTab("transform")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "transform" ? "#FBBF24" : "transparent", color: activeTab === "transform" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Transform Section
-        </button>
-
-        <button onClick={() => setActiveTab("learn")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "learn" ? "#FBBF24" : "transparent", color: activeTab === "learn" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          What You Will Learn
-        </button>
-
-        {/* NEW tab button for Feature Cards */}
-        <button onClick={() => setActiveTab("featurecards")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "featurecards" ? "#FBBF24" : "transparent", color: activeTab === "featurecards" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Feature Cards
-        </button>
-
-        {/* NEW tab for PowerKits (screenshot) */}
-        <button onClick={() => setActiveTab("powerkits")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "powerkits" ? "#FBBF24" : "transparent", color: activeTab === "powerkits" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          PowerKits / Support
-        </button>
-
-        {/* NEW tab for Pricing / Hero Card */}
-        <button onClick={() => setActiveTab("pricing")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "pricing" ? "#FBBF24" : "transparent", color: activeTab === "pricing" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Pricing / Hero Card
-        </button>
-
-        {/* NEW tab for Coach */}
-        <button onClick={() => setActiveTab("coach")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "coach" ? "#FBBF24" : "transparent", color: activeTab === "coach" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Meet Your Coach
-        </button>
-
-        {/* NEW tab for Guarantee / Refund */}
-        <button onClick={() => setActiveTab("guarantee")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "guarantee" ? "#FBBF24" : "transparent", color: activeTab === "guarantee" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Guarantee / Refund
-        </button>
-
-        {/* NEW tab for Client Video Feedback */}
-        <button onClick={() => setActiveTab("clientvideos")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "clientvideos" ? "#FBBF24" : "transparent", color: activeTab === "clientvideos" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Client Video Feedback
-        </button>
-
-        <button onClick={() => setActiveTab("faq")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "faq" ? "#FBBF24" : "transparent", color: activeTab === "faq" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          FAQ
-        </button>
-
-        <button onClick={() => setActiveTab("finalcta")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "finalcta" ? "#FBBF24" : "transparent", color: activeTab === "finalcta" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Final CTA / Register
-        </button>
-
-        <button onClick={() => setActiveTab("footerpages")} style={{ width: "100%", textAlign: "left", padding: "8px 10px", borderRadius: 6, border: "none", background: activeTab === "footerpages" ? "#FBBF24" : "transparent", color: activeTab === "footerpages" ? "#111827" : "#E5E7EB", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>
-          Footer Pages (T&C / Privacy / Refund)
-        </button>
+        <button onClick={() => handleNav("topheader")} style={{ background: activeTab === "topheader" ? "#FBBF24" : "transparent", color: activeTab === "topheader" ? "#111827" : "#E5E7EB" }}>Header</button>
+        <button onClick={() => handleNav("header")} style={{ background: activeTab === "header" ? "#FBBF24" : "transparent", color: activeTab === "header" ? "#111827" : "#E5E7EB" }}>Upper Section</button>
+        <button onClick={() => handleNav("hero")} style={{ background: activeTab === "hero" ? "#FBBF24" : "transparent", color: activeTab === "hero" ? "#111827" : "#E5E7EB" }}>Hero Section</button>
+        <button onClick={() => handleNav("socialproof")} style={{ background: activeTab === "socialproof" ? "#FBBF24" : "transparent", color: activeTab === "socialproof" ? "#111827" : "#E5E7EB" }}>Social Proof Bar</button>
+        <button onClick={() => handleNav("session")} style={{ background: activeTab === "session" ? "#FBBF24" : "transparent", color: activeTab === "session" ? "#111827" : "#E5E7EB" }}>Session Section</button>
+        <button onClick={() => handleNav("cta")} style={{ background: activeTab === "cta" ? "#FBBF24" : "transparent", color: activeTab === "cta" ? "#111827" : "#E5E7EB" }}>CTA & Timer</button>
+        <button onClick={() => handleNav("featured")} style={{ background: activeTab === "featured" ? "#FBBF24" : "transparent", color: activeTab === "featured" ? "#111827" : "#E5E7EB" }}>Featured Logos</button>
+        <button onClick={() => handleNav("transform")} style={{ background: activeTab === "transform" ? "#FBBF24" : "transparent", color: activeTab === "transform" ? "#111827" : "#E5E7EB" }}>Transform Section</button>
+        <button onClick={() => handleNav("learn")} style={{ background: activeTab === "learn" ? "#FBBF24" : "transparent", color: activeTab === "learn" ? "#111827" : "#E5E7EB" }}>What You Will Learn</button>
+        <button onClick={() => handleNav("featurecards")} style={{ background: activeTab === "featurecards" ? "#FBBF24" : "transparent", color: activeTab === "featurecards" ? "#111827" : "#E5E7EB" }}>Feature Cards</button>
+        <button onClick={() => handleNav("powerkits")} style={{ background: activeTab === "powerkits" ? "#FBBF24" : "transparent", color: activeTab === "powerkits" ? "#111827" : "#E5E7EB" }}>PowerKits / Support</button>
+        <button onClick={() => handleNav("pricing")} style={{ background: activeTab === "pricing" ? "#FBBF24" : "transparent", color: activeTab === "pricing" ? "#111827" : "#E5E7EB" }}>Pricing / Hero Card</button>
+        <button onClick={() => handleNav("coach")} style={{ background: activeTab === "coach" ? "#FBBF24" : "transparent", color: activeTab === "coach" ? "#111827" : "#E5E7EB" }}>Meet Your Coach</button>
+        <button onClick={() => handleNav("guarantee")} style={{ background: activeTab === "guarantee" ? "#FBBF24" : "transparent", color: activeTab === "guarantee" ? "#111827" : "#E5E7EB" }}>Guarantee / Refund</button>
+        <button onClick={() => handleNav("clientvideos")} style={{ background: activeTab === "clientvideos" ? "#FBBF24" : "transparent", color: activeTab === "clientvideos" ? "#111827" : "#E5E7EB" }}>Client Video Feedback</button>
+        <button onClick={() => handleNav("faq")} style={{ background: activeTab === "faq" ? "#FBBF24" : "transparent", color: activeTab === "faq" ? "#111827" : "#E5E7EB" }}>FAQ</button>
+        <button onClick={() => handleNav("finalcta")} style={{ background: activeTab === "finalcta" ? "#FBBF24" : "transparent", color: activeTab === "finalcta" ? "#111827" : "#E5E7EB" }}>Final CTA / Register</button>
+        <button onClick={() => handleNav("footerpages")} style={{ background: activeTab === "footerpages" ? "#FBBF24" : "transparent", color: activeTab === "footerpages" ? "#111827" : "#E5E7EB" }}>Footer Pages (T&C / Privacy / Refund)</button>
+        <button onClick={() => handleNav("popup")} style={{ background: activeTab === "popup" ? "#FBBF24" : "transparent", color: activeTab === "popup" ? "#111827" : "#E5E7EB" }}>Popup Section</button>
 
         <button onClick={handleLogout} style={{ marginTop: "auto", padding: 10, width: "100%", background: "#DC2626", border: "none", borderRadius: 4, color: "white", cursor: "pointer", fontWeight: 600, fontSize: 14 }}>Logout</button>
       </aside>
 
       {/* MAIN */}
-      <main style={{ flex: 1, padding: 28, background: "#F3F4F6" }}>
+      <main className="dashboard-main">
         {/* PANEL TOGGLE */}
         <div
           style={{
@@ -2427,7 +2489,7 @@ const DashboardPage = () => {
 
                   <div style={{ marginTop: 12, marginBottom: 12 }}>
                     <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Short description under name</label>
-                    <input name="principalDescription" value={ctaForm.principalDescription} onChange={handleCtaChange} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <ReactQuill theme="snow" value={ctaForm.principalDescription} onChange={(val) => setCtaForm(prev => ({ ...prev, principalDescription: val }))} style={{ height: 100, marginBottom: 40 }} />
                   </div>
 
                   <hr style={{ margin: "12px 0", borderColor: "#E5E7EB" }} />
@@ -3059,7 +3121,7 @@ const DashboardPage = () => {
                               <input placeholder="Title" value={card.title} onChange={(e) => handleFeatureCardChange(idx, "title", e.target.value)} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
                             </div>
                             <div>
-                              <textarea placeholder="Description" value={card.desc} onChange={(e) => handleFeatureCardChange(idx, "desc", e.target.value)} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", minHeight: 60 }} />
+                              <ReactQuill theme="snow" value={card.desc} onChange={(val) => handleFeatureCardChange(idx, "desc", val)} style={{ height: 100, marginBottom: 40 }} />
                             </div>
                           </div>
                         </div>
@@ -3189,7 +3251,7 @@ const DashboardPage = () => {
 
                   <div style={{ marginBottom: 12 }}>
                     <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Top Subheading (small)</label>
-                    <textarea name="topSubheading" value={powerKitsForm.topSubheading || ""} onChange={(e) => setPowerKitsForm(prev => ({ ...prev, topSubheading: e.target.value }))} style={{ width: "100%", padding: 8, minHeight: 70, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <ReactQuill theme="snow" value={powerKitsForm.topSubheading || ""} onChange={(val) => setPowerKitsForm(prev => ({ ...prev, topSubheading: val }))} style={{ height: 100, marginBottom: 40 }} />
                   </div>
 
                   <hr style={{ margin: "12px 0", borderColor: "#E5E7EB" }} />
@@ -3214,7 +3276,7 @@ const DashboardPage = () => {
                               <input placeholder="Title" value={card.title} onChange={(e) => handlePowerKitChange(idx, "title", e.target.value)} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
                             </div>
                             <div>
-                              <textarea placeholder="Subtitle / short description" value={card.subtitle} onChange={(e) => handlePowerKitChange(idx, "subtitle", e.target.value)} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", minHeight: 60 }} />
+                              <ReactQuill theme="snow" value={card.subtitle} onChange={(val) => handlePowerKitChange(idx, "subtitle", val)} style={{ height: 100, marginBottom: 40 }} />
                             </div>
                           </div>
                         </div>
@@ -3294,11 +3356,11 @@ const DashboardPage = () => {
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                     <div>
                       <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Pricing subtext (below heading)</label>
-                      <input value={powerKitsForm.pricingSub || "Book your 1-on-1 session and get personalized Guidance built only for your business."} onChange={(e) => setPowerKitsForm(prev => ({ ...prev, pricingSub: e.target.value }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                      <ReactQuill theme="snow" value={powerKitsForm.pricingSub || "Book your 1-on-1 session and get personalized Guidance built only for your business."} onChange={(val) => setPowerKitsForm(prev => ({ ...prev, pricingSub: val }))} style={{ height: 100, marginBottom: 40 }} />
                     </div>
                     <div>
                       <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Small note (under price)</label>
-                      <input value={powerKitsForm.pricingNote || "Start your session for just ₹99, Today. If the session genuinely helps you, you pay the remaining ₹900 after the session."} onChange={(e) => setPowerKitsForm(prev => ({ ...prev, pricingNote: e.target.value }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                      <ReactQuill theme="snow" value={powerKitsForm.pricingNote || "Start your session for just ₹99, Today. If the session genuinely helps you, you pay the remaining ₹900 after the session."} onChange={(val) => setPowerKitsForm(prev => ({ ...prev, pricingNote: val }))} style={{ height: 100, marginBottom: 40 }} />
                     </div>
                   </div>
 
@@ -3455,7 +3517,7 @@ const DashboardPage = () => {
 
                   <div style={{ marginBottom: 12 }}>
                     <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Hero subheading</label>
-                    <textarea value={pricingForm.subheading} onChange={(e) => setPricingForm(prev => ({ ...prev, subheading: e.target.value }))} style={{ width: "100%", padding: 8, minHeight: 70, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <ReactQuill theme="snow" value={pricingForm.subheading} onChange={(val) => setPricingForm(prev => ({ ...prev, subheading: val }))} style={{ height: 100, marginBottom: 40 }} />
                   </div>
 
                   {/* Hero image upload */}
@@ -3737,7 +3799,7 @@ const DashboardPage = () => {
                     <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Body paragraphs</label>
                     {guaranteeForm.bodyParagraphs.map((p, idx) => (
                       <div key={idx} style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-                        <textarea value={p} onChange={(e) => handleGuaranteeBodyChange(idx, e.target.value)} style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", minHeight: 60 }} />
+                        <ReactQuill theme="snow" value={p} onChange={(val) => handleGuaranteeBodyChange(idx, val)} style={{ flex: 1, height: 120, marginBottom: 20 }} />
                         <button onClick={() => removeGuaranteeParagraph(idx)} style={{ background: "#ef4444", color: "white", border: "none", padding: "8px 10px", borderRadius: 6, cursor: "pointer" }}>Remove</button>
                       </div>
                     ))}
@@ -3834,7 +3896,7 @@ const DashboardPage = () => {
 
                   <div style={{ marginBottom: 12 }}>
                     <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Description</label>
-                    <input name="description" value={clientVideosForm.description} onChange={(e) => setClientVideosForm(prev => ({ ...prev, description: e.target.value }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <ReactQuill theme="snow" value={clientVideosForm.description} onChange={(val) => setClientVideosForm(prev => ({ ...prev, description: val }))} style={{ height: 100, marginBottom: 40 }} />
                   </div>
 
                   <div style={{ marginBottom: 12 }}>
@@ -3958,7 +4020,7 @@ const DashboardPage = () => {
                           <input value={it.question} onChange={(e) => handleFaqItemChange(idx, "question", e.target.value)} placeholder="Question" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
                         </div>
                         <div style={{ marginBottom: 8 }}>
-                          <textarea value={it.answer} onChange={(e) => handleFaqItemChange(idx, "answer", e.target.value)} placeholder="Answer" style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB", minHeight: 64 }} />
+                          <ReactQuill theme="snow" value={it.answer} onChange={(val) => handleFaqItemChange(idx, "answer", val)} style={{ height: 100, marginBottom: 40 }} />
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
                           <button onClick={() => removeFaqItem(idx)} style={{ padding: "8px 10px", background: "#ef4444", color: "white", border: "none", borderRadius: 6, cursor: "pointer" }}>Remove</button>
@@ -4216,20 +4278,28 @@ const DashboardPage = () => {
                             </div>
                           </div>
 
-                          <textarea
-                            value={block.text}
-                            onChange={(e) => updateFooterBlock(footerEditTab, block.id, e.target.value)}
-                            style={{
-                              width: "100%",
-                              minHeight: block.type === "heading" ? 44 : 80,
-                              padding: 10,
-                              borderRadius: 6,
-                              border: "1px solid #D1D5DB",
-                              fontFamily: "inherit",
-                              fontSize: block.type === "heading" ? 14 : 13,
-                              fontWeight: block.type === "heading" ? 700 : 400
-                            }}
-                          />
+                          {block.type === "heading" ? (
+                            <input
+                              value={block.text}
+                              onChange={(e) => updateFooterBlock(footerEditTab, block.id, e.target.value)}
+                              style={{
+                                width: "100%",
+                                padding: 10,
+                                borderRadius: 6,
+                                border: "1px solid #D1D5DB",
+                                fontFamily: "inherit",
+                                fontSize: 14,
+                                fontWeight: 700
+                              }}
+                            />
+                          ) : (
+                            <ReactQuill
+                              theme="snow"
+                              value={block.text}
+                              onChange={(val) => updateFooterBlock(footerEditTab, block.id, val)}
+                              style={{ height: 150, marginBottom: 40 }}
+                            />
+                          )}
                         </div>
                       );
                     })}
@@ -4256,6 +4326,137 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </>
+        )}
+        {/* Popup Editor (3 Variants with Rich Text) */}
+        {activeTab === "popup" && (
+          <>
+            <h1 style={{ marginBottom: 8 }}>Popup Settings</h1>
+            <p style={{ marginTop: 0, color: "#4B5563", fontSize: 14 }}>Configure the 3 types of popups. Use Rich Text for descriptions to control font size, bold, etc.</p>
+
+            {/* 1. EXIT INTENT POPUP */}
+            <div style={{ marginTop: 24, padding: 20, background: "white", borderRadius: 10, border: "1px solid #E5E7EB" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+                <h3 style={{ margin: 0, fontSize: 18, color: "#DC2626" }}>1. Exit Intent Popup</h3>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700, cursor: "pointer" }}>
+                  Enable
+                  <input type="checkbox" checked={popupForm.exitPopup.enabled} onChange={(e) => setPopupForm(prev => ({ ...prev, exitPopup: { ...prev.exitPopup, enabled: e.target.checked } }))} style={{ transform: "scale(1.2)" }} />
+                </label>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                <div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading</label>
+                    <input value={popupForm.exitPopup.heading} onChange={(e) => setPopupForm(prev => ({ ...prev, exitPopup: { ...prev.exitPopup, heading: e.target.value } }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Description (Rich Text)</label>
+                    <ReactQuill theme="snow" value={popupForm.exitPopup.description} onChange={(val) => setPopupForm(prev => ({ ...prev, exitPopup: { ...prev.exitPopup, description: val } }))} style={{ height: 120, marginBottom: 40 }} />
+                  </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Small Text (Top)</label>
+                    <input value={popupForm.exitPopup.smallText} onChange={(e) => setPopupForm(prev => ({ ...prev, exitPopup: { ...prev.exitPopup, smallText: e.target.value } }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                  <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+                    <input value={popupForm.exitPopup.buttonText} onChange={(e) => setPopupForm(prev => ({ ...prev, exitPopup: { ...prev.exitPopup, buttonText: e.target.value } }))} placeholder="Button Text" style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <input value={popupForm.exitPopup.buttonLink} onChange={(e) => setPopupForm(prev => ({ ...prev, exitPopup: { ...prev.exitPopup, buttonLink: e.target.value } }))} placeholder="Link" style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                </div>
+                {/* Preview 1 */}
+                <div style={{ background: "#f9fafb", padding: 10, borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  <div style={{ width: "100%", background: popupForm.exitPopup.cardBg, padding: 20, borderRadius: 12, textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+                    <div style={{ fontSize: 10, color: "#6B7280" }}>{popupForm.exitPopup.smallText}</div>
+                    <h4 style={{ margin: "8px 0", fontSize: 16 }}>{popupForm.exitPopup.heading}</h4>
+                    <div dangerouslySetInnerHTML={{ __html: popupForm.exitPopup.description }} style={{ fontSize: 13, color: "#374151" }} />
+                    <button style={{ marginTop: 10, padding: "8px 16px", background: popupForm.exitPopup.buttonBg, color: popupForm.exitPopup.buttonTextColor, border: "none", borderRadius: 6, fontWeight: 600 }}>
+                      {popupForm.exitPopup.buttonText}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. WELCOME POPUP */}
+            <div style={{ marginTop: 24, padding: 20, background: "white", borderRadius: 10, border: "1px solid #E5E7EB" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+                <h3 style={{ margin: 0, fontSize: 18, color: "#D97706" }}>2. Welcome Popup</h3>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700, cursor: "pointer" }}>
+                  Enable
+                  <input type="checkbox" checked={popupForm.welcomePopup.enabled} onChange={(e) => setPopupForm(prev => ({ ...prev, welcomePopup: { ...prev.welcomePopup, enabled: e.target.checked } }))} style={{ transform: "scale(1.2)" }} />
+                </label>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                <div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading</label>
+                    <input value={popupForm.welcomePopup.heading} onChange={(e) => setPopupForm(prev => ({ ...prev, welcomePopup: { ...prev.welcomePopup, heading: e.target.value } }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Description (Rich Text)</label>
+                    <ReactQuill theme="snow" value={popupForm.welcomePopup.description} onChange={(val) => setPopupForm(prev => ({ ...prev, welcomePopup: { ...prev.welcomePopup, description: val } }))} style={{ height: 120, marginBottom: 40 }} />
+                  </div>
+                  <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+                    <input value={popupForm.welcomePopup.buttonText} onChange={(e) => setPopupForm(prev => ({ ...prev, welcomePopup: { ...prev.welcomePopup, buttonText: e.target.value } }))} placeholder="Button Text" style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <input value={popupForm.welcomePopup.buttonLink} onChange={(e) => setPopupForm(prev => ({ ...prev, welcomePopup: { ...prev.welcomePopup, buttonLink: e.target.value } }))} placeholder="Link" style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                </div>
+                {/* Preview 2 */}
+                <div style={{ background: "#f9fafb", padding: 10, borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  <div style={{ width: "100%", background: popupForm.welcomePopup.cardBg, padding: 20, borderRadius: 12, textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+                    <h4 style={{ margin: "8px 0", fontSize: 16 }}>{popupForm.welcomePopup.heading}</h4>
+                    <div dangerouslySetInnerHTML={{ __html: popupForm.welcomePopup.description }} style={{ fontSize: 13, color: "#374151" }} />
+                    <button style={{ marginTop: 10, padding: "8px 16px", background: popupForm.welcomePopup.buttonBg, color: popupForm.welcomePopup.buttonTextColor, border: "none", borderRadius: 6, fontWeight: 600 }}>
+                      {popupForm.welcomePopup.buttonText}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. JOURNEY POPUP */}
+            <div style={{ marginTop: 24, padding: 20, background: "white", borderRadius: 10, border: "1px solid #E5E7EB" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
+                <h3 style={{ margin: 0, fontSize: 18, color: "#059669" }}>3. "Almost There" Popup</h3>
+                <label style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 700, cursor: "pointer" }}>
+                  Enable
+                  <input type="checkbox" checked={popupForm.journeyPopup.enabled} onChange={(e) => setPopupForm(prev => ({ ...prev, journeyPopup: { ...prev.journeyPopup, enabled: e.target.checked } }))} style={{ transform: "scale(1.2)" }} />
+                </label>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                <div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Heading</label>
+                    <input value={popupForm.journeyPopup.heading} onChange={(e) => setPopupForm(prev => ({ ...prev, journeyPopup: { ...prev.journeyPopup, heading: e.target.value } }))} style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ display: "block", marginBottom: 6, fontWeight: 600 }}>Description (Rich Text)</label>
+                    <ReactQuill theme="snow" value={popupForm.journeyPopup.description} onChange={(val) => setPopupForm(prev => ({ ...prev, journeyPopup: { ...prev.journeyPopup, description: val } }))} style={{ height: 120, marginBottom: 40 }} />
+                  </div>
+                  <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
+                    <input value={popupForm.journeyPopup.buttonText} onChange={(e) => setPopupForm(prev => ({ ...prev, journeyPopup: { ...prev.journeyPopup, buttonText: e.target.value } }))} placeholder="Button Text" style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                    <input value={popupForm.journeyPopup.buttonLink} onChange={(e) => setPopupForm(prev => ({ ...prev, journeyPopup: { ...prev.journeyPopup, buttonLink: e.target.value } }))} placeholder="Link" style={{ flex: 1, padding: 8, borderRadius: 6, border: "1px solid #D1D5DB" }} />
+                  </div>
+                </div>
+                {/* Preview 3 */}
+                <div style={{ background: "#f9fafb", padding: 10, borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                  <div style={{ width: "100%", background: popupForm.journeyPopup.cardBg, padding: 20, borderRadius: 12, textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+                    <h4 style={{ margin: "8px 0", fontSize: 16 }}>{popupForm.journeyPopup.heading}</h4>
+                    <div dangerouslySetInnerHTML={{ __html: popupForm.journeyPopup.description }} style={{ fontSize: 13, color: "#374151" }} />
+                    <button style={{ marginTop: 10, padding: "8px 16px", background: popupForm.journeyPopup.buttonBg, color: popupForm.journeyPopup.buttonTextColor, border: "none", borderRadius: 6, fontWeight: 600 }}>
+                      {popupForm.journeyPopup.buttonText}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: 24, textAlign: "center" }}>
+              <button onClick={handleSavePopup} style={{ padding: "12px 30px", fontSize: 16, background: "#111827", color: "white", borderRadius: 8, border: "none", cursor: "pointer", fontWeight: 700 }}>Save All 3 Popups</button>
+              {popupMessage && <div style={{ marginTop: 12, fontWeight: 600, fontSize: 16 }}>{popupMessage}</div>}
             </div>
           </>
         )}
